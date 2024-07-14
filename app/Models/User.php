@@ -70,6 +70,6 @@ class User extends Authenticatable implements FilamentUser
     //add has many short_urls relationship
     public function short_urls()
     {
-        return $this->hasMany(ShortURL::class);
+        return $this->hasMany(MyShortUrl::class);
     }
 }

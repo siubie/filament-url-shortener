@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Filament\User\Resources;
+namespace App\Filament\Resources;
 
-use App\Filament\User\Resources\ShortUrlResource\Pages;
-use App\Filament\User\Resources\ShortUrlResource\RelationManagers;
+use App\Filament\Resources\ShortUrlResource\Pages;
+use App\Filament\Resources\ShortUrlResource\RelationManagers;
 use App\Models\MyShortUrl;
-use AshAllenDesign\ShortURL\Models\ShortURL;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ShortUrlResource extends Resource
@@ -27,11 +25,7 @@ class ShortUrlResource extends Resource
     {
         return $form
             ->schema([
-                //add text input for destination_url
-                TextInput::make('destination_url')
-                    ->label('Destination URL')
-                    ->required()
-                    ->placeholder('https://example.com'),
+                //
             ]);
     }
 
@@ -47,13 +41,17 @@ class ShortUrlResource extends Resource
                 TextColumn::make('url_key')
                     ->searchable()
                     ->sortable(),
+                //add column for owner
+                TextColumn::make('user.name')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
+                // Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -65,7 +63,7 @@ class ShortUrlResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            //add relation from user to short_urls
         ];
     }
 
@@ -76,5 +74,17 @@ class ShortUrlResource extends Resource
             'create' => Pages\CreateShortUrl::route('/create'),
             'edit' => Pages\EditShortUrl::route('/{record}/edit'),
         ];
+    }
+
+    //overide canCreate method
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    //override canEdit method
+    public static function canEdit(Model $model): bool
+    {
+        return false;
     }
 }

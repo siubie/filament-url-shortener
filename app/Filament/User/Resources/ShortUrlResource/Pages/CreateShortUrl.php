@@ -3,6 +3,7 @@
 namespace App\Filament\User\Resources\ShortUrlResource\Pages;
 
 use App\Filament\User\Resources\ShortUrlResource;
+use App\Models\MyShortUrl;
 use AshAllenDesign\ShortURL\Facades\ShortURL as FacadesShortURL;
 use AshAllenDesign\ShortURL\Models\ShortURL;
 use Filament\Actions;

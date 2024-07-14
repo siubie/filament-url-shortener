@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Models\Trait;
+
 use Illuminate\Database\Eloquent\Builder;
 
 trait Multitenantable
