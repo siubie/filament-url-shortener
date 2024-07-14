@@ -24,5 +24,12 @@ class UserSeeder extends Seeder
             'email' => 'user@user.com',
             'is_admin' => '0',
         ]);
+
+        //call user factory to create common user
+        \App\Models\User::factory()->create([
+            'name' => 'anotheruser',
+            'email' => 'anotheruser@user.com',
+            'is_admin' => '0',
+        ]);
     }
 }

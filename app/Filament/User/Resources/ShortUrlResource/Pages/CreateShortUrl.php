@@ -14,7 +14,11 @@ class CreateShortUrl extends CreateRecord
 
     protected function handleRecordCreation(array $data): ShortURL
     {
-        return FacadesShortURL::destinationUrl($data['destination_url'])->make();
+        return FacadesShortURL::destinationUrl($data['destination_url'])
+            ->beforeCreate(function (ShortURL $shortURL) {
+                $shortURL->user_id = auth()->id();
+            })
+            ->make();
     }
 
     protected function getRedirectUrl(): string

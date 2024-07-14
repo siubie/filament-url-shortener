@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use AshAllenDesign\ShortURL\Models\ShortURL;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,5 +65,11 @@ class User extends Authenticatable implements FilamentUser
             }
             return true;
         }
+    }
+
+    //add has many short_urls relationship
+    public function short_urls()
+    {
+        return $this->hasMany(ShortURL::class);
     }
 }
