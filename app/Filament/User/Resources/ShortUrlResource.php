@@ -9,12 +9,20 @@ use AshAllenDesign\ShortURL\Models\ShortURL;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -57,6 +65,7 @@ class ShortUrlResource extends Resource
                 //
             ])
             ->actions([
+                ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
             ])
@@ -74,11 +83,40 @@ class ShortUrlResource extends Resource
         ];
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Details')
+                    ->schema([
+                        TextEntry::make('destination_url')
+                            ->label('Destination URL'),
+                        TextEntry::make('default_short_url')
+                            ->label('Default Short Url')
+                            ->url(fn (MyShortUrl $record): string => url($record->default_short_url))
+                            ->openUrlInNewTab(),
+                        ImageEntry::make('image')
+                            ->size(200)
+                            ->label('QR Code'),
+                    ])
+                    ->columns(2),
+                Section::make('Analytics')
+                    ->schema([
+                        ViewEntry::make('status')
+                            ->label('Status')
+                            ->view('tes'),
+                    ]),
+
+            ]);
+    }
+
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListShortUrls::route('/'),
             'create' => Pages\CreateShortUrl::route('/create'),
+            'view' => Pages\ViewShortUrl::route('/{record}'),
             'edit' => Pages\EditShortUrl::route('/{record}/edit'),
         ];
     }

@@ -29,7 +29,7 @@ class CreateShortUrl extends CreateRecord
                 $result =  Builder::create()
                     ->writer(new PngWriter())
                     ->writerOptions([])
-                    ->data($shortURL->destination_url)
+                    ->data($shortURL->default_short_url)
                     ->encoding(new Encoding('UTF-8'))
                     ->errorCorrectionLevel(ErrorCorrectionLevel::High)
                     ->size(300)
