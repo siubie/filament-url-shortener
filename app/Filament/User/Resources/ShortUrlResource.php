@@ -103,8 +103,14 @@ class ShortUrlResource extends Resource
                 Section::make('Analytics')
                     ->schema([
                         ViewEntry::make('status')
-                            ->label('Status')
+                            ->label('Overview')
                             ->view('tes'),
+                        Split::make([
+                            ViewEntry::make('visit_chart')
+                                ->view('widget.short-url.visit'),
+                            ViewEntry::make('visit_chart')
+                                ->view('widget.short-url.visit'),
+                        ]),
                     ]),
 
             ]);
