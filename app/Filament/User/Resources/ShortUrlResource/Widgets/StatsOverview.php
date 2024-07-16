@@ -31,9 +31,9 @@ class StatsOverview extends BaseWidget
         return [
             //
             Stat::make('Unique Clicks', $this->record->visits->count()),
-            Stat::make('Top Operating Systems', $topOs->operating_system),
-            Stat::make('Top Browser', $topBrowser->browser),
-            Stat::make('Top Device', $topDevice->device_type),
+            Stat::make('Top Operating Systems', $topOs?->operating_system),
+            Stat::make('Top Browser', $topBrowser?->browser),
+            Stat::make('Top Device', $topDevice?->device_type),
         ];
     }
 }

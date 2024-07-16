@@ -109,7 +109,7 @@ class ShortUrlResource extends Resource
                             ViewEntry::make('visit_chart')
                                 ->view('widget.short-url.visit'),
                             ViewEntry::make('visit_chart')
-                                ->view('widget.short-url.visit'),
+                                ->view('widget.short-url.visit-by-browser'),
                         ]),
                     ]),
 
