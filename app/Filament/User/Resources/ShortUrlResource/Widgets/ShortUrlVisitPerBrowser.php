@@ -13,6 +13,7 @@ class ShortUrlVisitPerBrowser extends ChartWidget
 
     protected function getData(): array
     {
+        
         return [
             'datasets' => [
                 [
