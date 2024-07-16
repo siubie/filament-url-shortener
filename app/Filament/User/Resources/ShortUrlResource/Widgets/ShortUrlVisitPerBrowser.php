@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class ShortUrlVisitPerBrowser extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Url Visits By Browser';
+    //add max height
+    protected static ?string $maxHeight = '100';
+
 
     protected function getData(): array
     {

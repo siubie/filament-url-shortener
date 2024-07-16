@@ -9,7 +9,7 @@ use Flowframe\Trend\TrendValue;
 
 class ShortUrlVisitChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Link Visit By Month';
 
     protected function getData(): array
     {

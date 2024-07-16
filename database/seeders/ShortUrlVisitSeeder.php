@@ -19,7 +19,7 @@ class ShortUrlVisitSeeder extends Seeder
         //genereate 100 short urls visit
         $faker = Factory::create();
         //iterate 100 times
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $this->createShortUrlVisit($faker);
         }
     }
