@@ -6,6 +6,7 @@ use AshAllenDesign\ShortURL\Models\ShortURLVisit;
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
+use Illuminate\Support\Facades\DB;
 
 class ShortUrlVisitPerBrowser extends ChartWidget
 {
@@ -13,12 +14,16 @@ class ShortUrlVisitPerBrowser extends ChartWidget
 
     protected function getData(): array
     {
-        
+        //get unique browser from ShortURLVisit table and the count of visit according to the browser
+        $data = ShortURLVisit::select('browser', DB::raw('count(*) as total'))
+            ->groupBy('browser')
+            ->get();
         return [
             'datasets' => [
                 [
                     'label' => 'Url Visits By Browser',
-                    'data' => [100, 200, 300, 400, 500, 600, 700],
+                    // convert $data to data array
+                    'data' => $data->map(fn ($value) => $value->total)->toArray(),
                     'backgroundColor' => [
                         '#FF6384',
                         '#36A2EB',
@@ -30,15 +35,8 @@ class ShortUrlVisitPerBrowser extends ChartWidget
                     ],
                 ],
             ],
-            'labels' => [
-                'Chrome',
-                'Firefox',
-                'Safari',
-                'Edge',
-                'Opera',
-                'IE',
-                'Other'
-            ],
+            //convert $data to labels array
+            'labels' => $data->map(fn ($value) => $value->browser)->toArray(),
 
         ];
     }
