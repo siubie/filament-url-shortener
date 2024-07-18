@@ -7,8 +7,15 @@ use App\Filament\Resources\ShortUrlResource\RelationManagers;
 use App\Models\MyShortUrl;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,6 +58,7 @@ class ShortUrlResource extends Resource
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
+                ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -59,6 +67,43 @@ class ShortUrlResource extends Resource
                 ]),
             ]);
     }
+
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Details')
+                    ->schema([
+                        TextEntry::make('destination_url')
+                            ->label('Destination URL'),
+                        TextEntry::make('default_short_url')
+                            ->label('Default Short Url')
+                            ->url(fn (MyShortUrl $record): string => url($record->default_short_url))
+                            ->openUrlInNewTab(),
+                        ImageEntry::make('image')
+                            ->size(200)
+                            ->label('QR Code'),
+                    ])
+                    ->columns(3),
+                Section::make('Analytics')
+                    ->schema([
+                        ViewEntry::make('status')
+                            ->label('Overview')
+                            ->view('tes'),
+                        Split::make([
+                            ViewEntry::make('visit_chart')
+                                ->view('widget.short-url.visit'),
+                            ViewEntry::make('visit_chart')
+                                ->view('widget.short-url.visit-by-os'),
+                            ViewEntry::make('visit_chart')
+                                ->view('widget.short-url.visit-by-browser'),
+                        ]),
+                    ]),
+
+            ]);
+    }
+
 
     public static function getRelations(): array
     {
@@ -72,6 +117,7 @@ class ShortUrlResource extends Resource
         return [
             'index' => Pages\ListShortUrls::route('/'),
             'create' => Pages\CreateShortUrl::route('/create'),
+            'view' => Pages\ViewShortUrl::route('/{record}'),
             'edit' => Pages\EditShortUrl::route('/{record}/edit'),
         ];
     }
