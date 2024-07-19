@@ -11,11 +11,12 @@ use Illuminate\Support\Facades\DB;
 class ShortUrlVisitPerOperatingSystem extends ChartWidget
 {
     protected static ?string $heading = 'Chart';
-
+    public $record;
     protected function getData(): array
     {
         //select browser and agregate on ShortURLVisit table
         $data = ShortURLVisit::select('operating_system', DB::raw('count(*) as total'))
+            ->where('short_url_id', $this->record->id)
             ->groupBy('operating_system')
             ->get();
 

@@ -15,10 +15,12 @@ class ShortUrlVisitPerBrowser extends ChartWidget
     protected static ?string $maxHeight = '100';
 
 
+    public $record;
     protected function getData(): array
     {
         //get unique browser from ShortURLVisit table and the count of visit according to the browser
         $data = ShortURLVisit::select('browser', DB::raw('count(*) as total'))
+            ->where('short_url_id', $this->record->id)
             ->groupBy('browser')
             ->get();
         return [

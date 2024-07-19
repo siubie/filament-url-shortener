@@ -11,9 +11,10 @@ class ShortUrlVisitChart extends ChartWidget
 {
     protected static ?string $heading = 'Link Visit By Month';
 
+    public $record;
     protected function getData(): array
     {
-        $data = Trend::model(ShortURLVisit::class)
+        $data = Trend::query(ShortURLVisit::where('short_url_id', $this->record->id))
             ->between(
                 start: now()->startOfYear(),
                 end: now()->endOfYear(),
